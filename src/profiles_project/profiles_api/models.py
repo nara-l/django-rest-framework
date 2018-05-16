@@ -30,7 +30,7 @@ class UserProfileManager(BaseUserManager):
 
         user.save(using=self._db)
 
-        
+
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Represent a 'user profile' in our system. """
     email = models.EmailField(max_length=255, unique=True)
@@ -56,3 +56,15 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Django uses to convert the object to a string"""
         return self.email
+
+class ProfileFeedItem(models.Model):
+    """Profile status update"""
+
+    user_profile = models.ForeignKey("UserProfile", on_delete=models.CASCADE)
+    status_text = models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        """Return the model as string"""
+
+        return self.status_text
